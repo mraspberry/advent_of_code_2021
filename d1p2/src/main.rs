@@ -7,15 +7,16 @@ fn read_to_vec<R: Read>(io: R) -> Result<Vec<u32>, Error> {
     let br = BufReader::new(io);
     let mut v: Vec<u32> = vec![];
     for line in br.lines() {
-        v.push(line?
-            .trim()
-            .parse::<u32>()
-            .map_err(|e| Error::new(ErrorKind::InvalidData, e))?);
+        v.push(
+            line?
+                .trim()
+                .parse::<u32>()
+                .map_err(|e| Error::new(ErrorKind::InvalidData, e))?,
+        );
     }
     Ok(v)
 }
-fn solve(items: &Vec<u32>) -> u32
-{
+fn solve(items: &Vec<u32>) -> u32 {
     let mut prev_sum: u32 = 0;
     let mut count: u32 = 0;
     for item in items.windows(3) {
@@ -25,7 +26,7 @@ fn solve(items: &Vec<u32>) -> u32
         }
         prev_sum = sum;
     }
-    return count
+    return count;
 }
 
 fn main() {
