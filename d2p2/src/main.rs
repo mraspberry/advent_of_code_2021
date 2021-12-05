@@ -23,14 +23,18 @@ impl SubPositionChange {
 struct Submarine {
     horizontal: u32,
     depth: u32,
+    aim: u32,
 }
 
 impl Submarine {
     fn change_position(&mut self, change: SubPositionChange) {
         match change.direction {
-            SubMovementDirection::Forward => self.horizontal += change.units,
-            SubMovementDirection::Up => self.depth -= change.units,
-            SubMovementDirection::Down => self.depth += change.units,
+            SubMovementDirection::Forward => {
+                self.horizontal += change.units;
+                self.depth += self.aim * change.units;
+            }
+            SubMovementDirection::Up => self.aim -= change.units,
+            SubMovementDirection::Down => self.aim += change.units,
         };
     }
 
@@ -42,6 +46,7 @@ impl Submarine {
         Submarine {
             horizontal: 0u32,
             depth: 0u32,
+            aim: 0u32,
         }
     }
 }
@@ -81,7 +86,7 @@ fn main() {
 
 #[test]
 fn test_example() {
-    let ans: u32 = 150;
+    let ans: u32 = 900;
     let movements = vec![
         SubPositionChange::new(SubMovementDirection::Forward, 5u32),
         SubPositionChange::new(SubMovementDirection::Down, 5u32),
