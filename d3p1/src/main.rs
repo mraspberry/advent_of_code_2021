@@ -1,6 +1,7 @@
 use std::collections::HashMap;
+use std::fs;
 
-#[derive(Debug)]
+#[derive(Debug, Clone, Copy)]
 struct Column {
     zeros: u32,
     ones: u32
@@ -28,9 +29,10 @@ impl Column {
     }
 }
 
-fn solve(readings: String) -> u32 {
+fn process_readings(readings: String) -> HashMap<usize, Column> {
     let mut columns: HashMap<usize, Column> = HashMap::new();
     for line in readings.lines() {
+//        dbg!(line);
         if line.trim().is_empty() {
             continue
         }
@@ -43,16 +45,27 @@ fn solve(readings: String) -> u32 {
             };
         }
     }
+    return columns
+}
+fn solve(readings: String) -> u32 {
+    let columns = process_readings(readings);
+//    dbg!(&columns);
     let mut gamma = String::new();
     let mut epsilon = String::new();
-    for i in {0..columns.len() - 1}.into_iter() {
+    for i in {0..columns.len()}.into_iter() {
+//        dbg!(i);
         gamma.push_str(columns[&i].most_common());
+//        dbg!(&gamma);
         epsilon.push_str(columns[&i].least_common());
+//        dbg!(&epsilon);
     }
+//    dbg!(&gamma);
+//    dbg!(&epsilon);
     u32::from_str_radix(gamma.as_str(), 2).unwrap() * u32::from_str_radix(epsilon.as_str(), 2).unwrap()
 }
 fn main() {
-    println!("Hello, world!");
+    let readings = fs::read_to_string("input.txt").expect("Unable to read input.txt");
+    println!("{}", solve(readings));
 }
 
 #[test]
