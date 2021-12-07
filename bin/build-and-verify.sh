@@ -9,9 +9,6 @@ fail() {
 }
 
 cd $(git rev-parse --show-toplevel)
-echo "Checking that everything builds"
-cargo check --frozen || fail "COMPILE CHECK FAILED"
-
 echo "Checking that tests pass"
 cargo test || fail "ONE OR MORE TESTS FAILED"
 
