@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Rust
-        uses: @action s-rs/toolchain@v1
+        uses: @actions-rs/toolchain@v1
         with:
           toolchain: stable
         run: cargo check && cargo test && cargo fmt -- --check
