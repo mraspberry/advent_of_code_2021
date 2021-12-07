@@ -17,4 +17,4 @@ jobs:
       - uses: @actions-rs/toolchain@v1
         with:
           toolchain: stable
-      - run: cargo check && cargo test && cargo fmt -- --check
+        run: cargo check && cargo test && cargo fmt -- --check
