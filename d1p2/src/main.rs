@@ -1,21 +1,5 @@
-use std::fs::File;
-use std::io::{BufRead, BufReader, Error, ErrorKind, Read};
-
 // answer is 1706
 
-fn read_to_vec<R: Read>(io: R) -> Result<Vec<u32>, Error> {
-    let br = BufReader::new(io);
-    let mut v: Vec<u32> = vec![];
-    for line in br.lines() {
-        v.push(
-            line?
-                .trim()
-                .parse::<u32>()
-                .map_err(|e| Error::new(ErrorKind::InvalidData, e))?,
-        );
-    }
-    Ok(v)
-}
 fn solve(items: &Vec<u32>) -> u32 {
     let mut prev_sum: u32 = 0;
     let mut count: u32 = 0;
@@ -30,8 +14,10 @@ fn solve(items: &Vec<u32>) -> u32 {
 }
 
 fn main() {
-    let file = File::open("input.txt").unwrap();
-    let nums: Vec<u32> = read_to_vec(file).unwrap();
+    let nums: Vec<u32> = include_str!("../input.txt")
+        .lines()
+        .map(|n| n.parse::<u32>().unwrap())
+        .collect::<Vec<u32>>();
     println!("{}", solve(&nums));
 }
 

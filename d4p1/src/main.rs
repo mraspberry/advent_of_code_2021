@@ -37,16 +37,16 @@ impl BingoBoard {
     }
 }
 
-fn get_called_nums(called: &str) -> Vec::<u32> {
+fn get_called_nums(called: &str) -> Vec<u32> {
     let mut nums: Vec<u32> = Vec::new();
     for numstr in called.split(',').into_iter() {
         debug!("numstr: {}", numstr);
         match numstr.trim().parse::<u32>() {
             Ok(ok) => nums.push(ok),
-            Err(_) => panic!("Non-numeric item in called numbers")
+            Err(_) => panic!("Non-numeric item in called numbers"),
         };
     }
-    return nums
+    return nums;
 }
 
 fn populate_boards(lines: &mut Lines) -> Vec<BingoBoard> {
@@ -63,21 +63,24 @@ fn populate_boards(lines: &mut Lines) -> Vec<BingoBoard> {
             continue;
         }
         for (i, numstr) in line.split_whitespace().enumerate() {
-            boards[current_board].set_pos(rownum, i, BingoNumber::new(numstr.parse::<u32>().unwrap()));
+            boards[current_board].set_pos(
+                rownum,
+                i,
+                BingoNumber::new(numstr.parse::<u32>().unwrap()),
+            );
         }
         rownum += 1;
     }
     dbg!(&boards);
-    return boards
+    return boards;
 }
 
 fn solve(input: &str) -> u32 {
     let mut lines = input.lines();
     let called = get_called_nums(lines.next().unwrap());
-    return 0u32
+    return 0u32;
 }
-fn main() {
-}
+fn main() {}
 
 #[test]
 fn test_get_called_nums() {
@@ -100,19 +103,85 @@ fn test_populate_boards() {
 14 21 16 12  6\n
 ";
     let ans: Vec<BingoBoard> = vec![
-        BingoBoard { board: [
-            [BingoNumber::new(22), BingoNumber::new(13), BingoNumber::new(17), BingoNumber::new(11), BingoNumber::new(0)],
-            [BingoNumber::new(8), BingoNumber::new(2), BingoNumber::new(23), BingoNumber::new(4), BingoNumber::new(24)],
-            [BingoNumber::new(21), BingoNumber::new(9), BingoNumber::new(14), BingoNumber::new(16), BingoNumber::new(7)],
-            [BingoNumber::new(6), BingoNumber::new(10), BingoNumber::new(3), BingoNumber::new(18), BingoNumber::new(5)],
-            [BingoNumber::new(1), BingoNumber::new(12), BingoNumber::new(20), BingoNumber::new(15), BingoNumber::new(19)]
-        ]}, BingoBoard {board: [
-            [BingoNumber::new(3), BingoNumber::new(15), BingoNumber::new(0), BingoNumber::new(2), BingoNumber::new(22)],
-            [BingoNumber::new(9), BingoNumber::new(18), BingoNumber::new(13), BingoNumber::new(17), BingoNumber::new(5)],
-            [BingoNumber::new(19), BingoNumber::new(8), BingoNumber::new(7), BingoNumber::new(25), BingoNumber::new(23)],
-            [BingoNumber::new(20), BingoNumber::new(11), BingoNumber::new(10), BingoNumber::new(24), BingoNumber::new(4)],
-            [BingoNumber::new(14), BingoNumber::new(21), BingoNumber::new(16), BingoNumber::new(12), BingoNumber::new(6)]
-        ]}];
+        BingoBoard {
+            board: [
+                [
+                    BingoNumber::new(22),
+                    BingoNumber::new(13),
+                    BingoNumber::new(17),
+                    BingoNumber::new(11),
+                    BingoNumber::new(0),
+                ],
+                [
+                    BingoNumber::new(8),
+                    BingoNumber::new(2),
+                    BingoNumber::new(23),
+                    BingoNumber::new(4),
+                    BingoNumber::new(24),
+                ],
+                [
+                    BingoNumber::new(21),
+                    BingoNumber::new(9),
+                    BingoNumber::new(14),
+                    BingoNumber::new(16),
+                    BingoNumber::new(7),
+                ],
+                [
+                    BingoNumber::new(6),
+                    BingoNumber::new(10),
+                    BingoNumber::new(3),
+                    BingoNumber::new(18),
+                    BingoNumber::new(5),
+                ],
+                [
+                    BingoNumber::new(1),
+                    BingoNumber::new(12),
+                    BingoNumber::new(20),
+                    BingoNumber::new(15),
+                    BingoNumber::new(19),
+                ],
+            ],
+        },
+        BingoBoard {
+            board: [
+                [
+                    BingoNumber::new(3),
+                    BingoNumber::new(15),
+                    BingoNumber::new(0),
+                    BingoNumber::new(2),
+                    BingoNumber::new(22),
+                ],
+                [
+                    BingoNumber::new(9),
+                    BingoNumber::new(18),
+                    BingoNumber::new(13),
+                    BingoNumber::new(17),
+                    BingoNumber::new(5),
+                ],
+                [
+                    BingoNumber::new(19),
+                    BingoNumber::new(8),
+                    BingoNumber::new(7),
+                    BingoNumber::new(25),
+                    BingoNumber::new(23),
+                ],
+                [
+                    BingoNumber::new(20),
+                    BingoNumber::new(11),
+                    BingoNumber::new(10),
+                    BingoNumber::new(24),
+                    BingoNumber::new(4),
+                ],
+                [
+                    BingoNumber::new(14),
+                    BingoNumber::new(21),
+                    BingoNumber::new(16),
+                    BingoNumber::new(12),
+                    BingoNumber::new(6),
+                ],
+            ],
+        },
+    ];
     let check = populate_boards(&mut input.lines());
     for b in 0..1 {
         for i in 0..4 {

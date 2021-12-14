@@ -1,4 +1,5 @@
-use std::fs;
+#[macro_use]
+extern crate derive_new;
 
 #[derive(Debug, Clone, Copy)]
 enum SubMovementDirection {
@@ -7,22 +8,19 @@ enum SubMovementDirection {
     Down,
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, new)]
 struct SubPositionChange {
     direction: SubMovementDirection,
     units: u32,
 }
 
-impl SubPositionChange {
-    fn new(direction: SubMovementDirection, units: u32) -> SubPositionChange {
-        SubPositionChange { direction, units }
-    }
-}
-
-#[derive(Debug)]
+#[derive(Debug, new)]
 struct Submarine {
+    #[new(default)]
     horizontal: u32,
+    #[new(default)]
     depth: u32,
+    #[new(default)]
     aim: u32,
 }
 
@@ -41,14 +39,6 @@ impl Submarine {
     fn report(&self) -> u32 {
         self.horizontal * self.depth
     }
-
-    fn new() -> Submarine {
-        Submarine {
-            horizontal: 0u32,
-            depth: 0u32,
-            aim: 0u32,
-        }
-    }
 }
 
 fn solve(movements: &Vec<SubPositionChange>) -> u32 {
@@ -61,7 +51,7 @@ fn solve(movements: &Vec<SubPositionChange>) -> u32 {
 
 fn main() {
     let mut movements: Vec<SubPositionChange> = Vec::new();
-    let contents = fs::read_to_string("input.txt").expect("Unable to open input.txt");
+    let contents = include_str!("../input.txt");
     for instruction in contents.lines() {
         if instruction.trim().is_empty() {
             continue;

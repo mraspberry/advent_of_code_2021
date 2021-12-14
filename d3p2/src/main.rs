@@ -1,20 +1,16 @@
+#[macro_use]
+extern crate derive_new;
 use std::collections::HashMap;
-use std::fs;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, new)]
 struct Column {
+    #[new(default)]
     zeros: u32,
+    #[new(default)]
     ones: u32,
 }
 
 impl Column {
-    fn new() -> Column {
-        Column {
-            zeros: 0u32,
-            ones: 0u32,
-        }
-    }
-
     fn most_common(&self) -> char {
         if self.zeros > self.ones {
             '0'
@@ -50,7 +46,7 @@ fn populate_columns(readings: &Vec<&str>) -> HashMap<usize, Column> {
     return columns;
 }
 
-fn calc_ogenerator_rating(readings: &String) -> u32 {
+fn calc_ogenerator_rating(readings: &str) -> u32 {
     let mut readings = readings.split_whitespace().collect::<Vec<_>>();
     //    dbg!(&readings);
     let mut columns = populate_columns(&readings);
@@ -71,7 +67,7 @@ fn calc_ogenerator_rating(readings: &String) -> u32 {
     u32::from_str_radix(readings[0], 2).unwrap()
 }
 
-fn calc_scrubber_rating(readings: &String) -> u32 {
+fn calc_scrubber_rating(readings: &str) -> u32 {
     let mut readings = readings.split_whitespace().collect::<Vec<_>>();
     //    dbg!(&readings);
     let mut columns = populate_columns(&readings);
@@ -90,7 +86,7 @@ fn calc_scrubber_rating(readings: &String) -> u32 {
     u32::from_str_radix(readings[0], 2).unwrap()
 }
 
-fn solve(readings: String) -> u32 {
+fn solve(readings: &str) -> u32 {
     let ogenerator = calc_ogenerator_rating(&readings);
     let scrubber = calc_scrubber_rating(&readings);
     //    dbg!(ogenerator);
@@ -99,7 +95,7 @@ fn solve(readings: String) -> u32 {
 }
 
 fn main() {
-    let readings = fs::read_to_string("input.txt").expect("Unable to read input.txt");
+    let readings = include_str!("../input.txt");
     println!("{}", solve(readings));
 }
 
@@ -110,5 +106,5 @@ fn test_example() {
         "00100", "11110", "10110", "10111", "10101", "01111", "00111", "11100", "10000", "11001",
         "00010", "01010",
     ];
-    assert_eq!(ans, solve(input.join("\n")));
+    assert_eq!(ans, solve(input.join("\n").as_str()));
 }

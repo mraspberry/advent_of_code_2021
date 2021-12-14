@@ -1,20 +1,16 @@
+#[macro_use]
+extern crate derive_new;
 use std::collections::HashMap;
-use std::fs;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, new)]
 struct Column {
+    #[new(default)]
     zeros: u32,
+    #[new(default)]
     ones: u32,
 }
 
 impl Column {
-    fn new() -> Column {
-        Column {
-            zeros: 0u32,
-            ones: 0u32,
-        }
-    }
-
     fn most_common(&self) -> &str {
         if self.zeros > self.ones {
             "0"
@@ -32,7 +28,7 @@ impl Column {
     }
 }
 
-fn process_readings(readings: String) -> HashMap<usize, Column> {
+fn process_readings(readings: &str) -> HashMap<usize, Column> {
     let mut columns: HashMap<usize, Column> = HashMap::new();
     for line in readings.lines() {
         //        dbg!(line);
@@ -50,7 +46,7 @@ fn process_readings(readings: String) -> HashMap<usize, Column> {
     }
     return columns;
 }
-fn solve(readings: String) -> u32 {
+fn solve(readings: &str) -> u32 {
     let columns = process_readings(readings);
     //    dbg!(&columns);
     let mut gamma = String::new();
@@ -68,7 +64,7 @@ fn solve(readings: String) -> u32 {
         * u32::from_str_radix(epsilon.as_str(), 2).unwrap()
 }
 fn main() {
-    let readings = fs::read_to_string("input.txt").expect("Unable to read input.txt");
+    let readings = include_str!("../input.txt");
     println!("{}", solve(readings));
 }
 
@@ -79,5 +75,5 @@ fn test_example() {
         "00100", "11110", "10110", "10111", "10101", "01111", "00111", "11100", "10000", "11001",
         "00010", "01010",
     ];
-    assert_eq!(ans, solve(input.join("\n")));
+    assert_eq!(ans, solve(input.join("\n").as_str()));
 }
